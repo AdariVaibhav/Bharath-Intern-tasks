@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adari Vaibhav - Portfolio</title>
+    <style>
+        /* Dark theme styles */
+        body {
+            background-image: url('https://i.pinimg.com/originals/37/7b/6c/377b6cc6ee48b0420bf411114a77668a.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-attachment: fixed;
+            background-color: rgba(0, 0, 0, 0.7); /* 70% black */
+            color: #ddd;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* To stack header and content vertically */
+        }
+
+        .header {
+            background-color: rgba(0, 0, 0, 0.9); /* 90% black */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text {
+            font-size: 24px;
+            color: #fff;
+            text-transform: uppercase; /* Uppercase name */
+        }
+
+        .navbar {
+            background-color: black; /* Set the background color to black */
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Display the links horizontally */
+            justify-content: flex-start; /* Align the links to the left */
+            align-items: center; /* Center vertically within the navbar */
+        }
+
+        .nav-item {
+            margin-right: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #3498db; /* Change color on hover (blue) */
+        }
+
+        .content {
+            margin-top: 20px; /* Decreased margin-top value */
+            padding: 20px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #fff;
+        }
+
+        p {
+            color: #ccc;
+        }
+
+        .content a {
+            text-decoration: none;
+            color: #3498db;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Scroll to top button styles */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px; /* Adjust the distance from the bottom */
+            right: 20px; /* Adjust the distance from the right */
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .scroll-to-top:hover {
+            background-color: #3498db; /* Change color on hover (blue) */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-text">
+            Adari Vaibhav
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item"><a href="#about" class="nav-link" onclick="scrollToSection('about')">About Me</a></li>
+            <li class="nav-item"><a href="#education" class="nav-link" onclick="scrollToSection('education')">Education</a></li>
+            <li class="nav-item"><a href="#skills" class="nav-link" onclick="scrollToSection('skills')">Skills</a></li>
+            <li class="nav-item"><a href="#projects" class="nav-link" onclick="scrollToSection('projects')">Projects</a></li>
+            <li class="nav-item"><a href="#internships" class="nav-link" onclick="scrollToSection('internships')">Internships</a></li>
+            <li class="nav-item"><a href="#achievements" class="nav-link" onclick="scrollToSection('achievements')">Achievements</a></li>
+            <li class="nav-item"><a href="#certifications" class="nav-link" onclick="scrollToSection('certifications')">Certifications</a></li>
+            <li class="nav-item"><a href="#activities" class="nav-link" onclick="scrollToSection('activities')">Activities</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <section id="about">
+            <h2>About Me</h2>
+            <p>
+                Adari Vaibhav<br>
+                44-28-3/1, Railway New Colony, Visakhapatnam-530016, Andhra Pradesh<br>
+                Phone: +1 (123) 456-7890 | Email: adarivaibhavmay20@gmail.com | LinkedIn: <a href="https://www.linkedin.com/in/vaibhav" target="_blank">https://www.linkedin.com/in/vaibhav</a>
+            </p>
+            <p>
+                Objective:<br>
+                Enthusiastic and dedicated undergraduate student with a strong academic background and a passion for coding and problem-solving. Seeking opportunities to apply my skills and knowledge to real-world projects and contribute to a dynamic team.
+            </p>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <p>
+                2019 - 2025: Anil Neerukonda Institute of Technology, Visakhapatnam<br>
+                - Bachelor of Technology (B.Tech) in Computer Science Engineering with Data Science specialization<br>
+                - Cumulative GPA: 9.0/10.0 (Expected Graduation Year: 2025)
+            </p>
+            <p>
+                2019 - 2021: Ravi Jr. College, Visakhapatnam<br>
+                - Intermediate in MPC (Mathematics, Physics, Chemistry)<br>
+                - Percentage: 94%
+            </p>
+            <p>
+                2009 - 2019: Timpany School, Visakhapatnam<br>
+                - 10th Grade (ICSE)<br>
+                - Percentage: 94.5%
+            </p>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <p>
+                - Programming Languages: Proficient in Java, Python, C, C++<br>
+                - Web Development: HTML, CSS, JavaScript<br>
+                - Communication Skills: Excellent verbal and written communication<br>
+                - Leadership: Evidenced leadership qualities<br>
+                - Problem Solving: Strong analytical and problem-solving skills
+            </p>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <p>
+                1. E-commerce Website<br>
+                - Description: Developed a fully functional e-commerce website using HTML, CSS, and JavaScript, enabling seamless online shopping.<br>
+                - Technologies Used: HTML, CSS, JavaScript<br>
+                - Project Link: <a href="https://github.com/AdariVaibhav/Bharath-Intern-tasks.git" target="_blank">sample project 1</a>
+            </p>
+            <p>
+                2. Inventory Management System<br>
+                - Description: Created an inventory management system in Java, allowing efficient tracking and management of stock.<br>
+                - Technologies Used: Java<br>
+                - Project Link: <a href="https://github.com/AdariVaibhav/Bharath-Intern-tasks.git" target="_blank">sample project 2</a>
+            </p>
+        </section>
+
+        <section id="internships">
+            <h2>Internships</h2>
+            <p>
+                2022 - Present: TechXcel Solutions Pvt. Ltd., Pune, India<br>
+                - Position: Software Engineering Intern<br>
+                - Description: Collaborated with a team of developers to enhance and optimize web applications, contributing to improved user experiences.<br>
+                - Reference:<br>
+                - Jane Smith<br>
+                - Email: janesmith@example.com<br>
+                - Phone: +1 (555) 123-4567
+            </p>
+            <p>
+                2021 - 2022: InnovateHub Inc., Mumbai, India<br>
+                - Position: Web Development Intern<br>
+                - Description: Assisted in designing and developing the company's website, resulting in a modern and user-friendly interface.<br>
+                - Reference:<br>
+                - John Doe<br>
+                - Email: johndoe@example.com<br>
+                - Phone: +1 (555) 987-6543
+            </p>
+        </section>
+
+        <section id="achievements">
+            <h2>Achievements</h2>
+            <p>
+                - Recipient of the Academic Excellence Scholarship.<br>
+                - Awarded the "Best Presenter" at the Tech Innovators Summit for outstanding communication skills and presentation abilities.
+            </p>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <p>
+                - Java Programming Certification: Coursera, 2023<br>
+                - Web Development Fundamentals: edX, 2022
+            </p>
+        </section>
+
+        <section id="activities">
+            <h2>Activities</h2>
+            <p>
+                - Member of the Coding Club at Anil Neerukonda Institute of Technology, actively participating in coding competitions and hackathons.<br>
+                - Volunteered as a mentor at CodeCrafters Bootcamp, helping beginners build coding skills.
+            </p>
+        </section>
+        <button class="scroll-to-top" onclick="scrollToTop()">^</button>
+    </div>
+
+    <script>
+        // JavaScript code for smooth scrolling to sections
+        // JavaScript function to scroll to the top of the page smoothly
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // JavaScript function to scroll to a specific content section smoothly
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                window.scrollTo({
+                    top: section.offsetTop - headerHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
