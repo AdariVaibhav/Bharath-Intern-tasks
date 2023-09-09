@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <style>
+        body {
+            background-color: #111; /* 70% black */
+            color: white;
+            font-family: "Graphique Pro", Arial, sans-serif; /* Use "Graphique Pro" font */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #111;
+            padding: 20px;
+            position: relative;
+        }
+
+        nav {
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+/* Style for navigation buttons */
+        nav a.button {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #ff0000; /* Red */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        nav a.button:hover {
+            background-color: #ff3333; /* Lighter red on hover */
+        }
+
+        .content {
+            padding: 20px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent movies from wrapping to the next line */
+            display: flex; /* Enable flexbox layout */
+        }
+
+/* Style for the "Previous" button */
+        .scroll-button:first-child,
+/* Style for the "Next" button */
+        .scroll-button:last-child {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: red;
+            font-size: 24px;
+            padding: 5px;
+            width: 50px; /* Fixed width */
+            height: 50px;
+            border: none;
+            border-radius: 100%;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+/* Style for the "Previous" and "Next" buttons on hover */
+        .scroll-button:first-child:hover,
+        .scroll-button:last-child:hover {
+            background-color: red;
+            color: black;
+        }
+
+        .scroll-button:hover {
+            background-color: black; /* Black background on hover */
+            color: #ff0000; /* Red text on hover */
+        }
+
+/* Center the scroll buttons vertically */
+        .scroll-buttons-container {
+            display: flex;
+            align-items: center;
+        }   
+
+/* Style for the movie card wrapper */
+        .movie-card-wrapper {
+            display: flex; /* Enable flexbox layout */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Prevent movies from wrapping to the next line */
+            margin-bottom: 20px; /* Add spacing at the bottom */
+            padding-bottom: 20px; /* Add padding at the bottom */
+        }
+
+/* Style for each movie card */
+        .movie-card {
+            background-color: #333; /* 25% grey */
+            padding: 10px;
+            width: 250px; /* Maintain the original width */
+            height: 350px; /* Maintain the original height */
+            margin-right: 20px; /* Add spacing between movie cards */
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-align: left; /* Left-align title */
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-title {
+            font-weight: bold;
+            color: #fff; /* White text */
+            font-size: 20px; /* Adjust the font size */
+            position: absolute;
+            bottom: 10px; /* Place the title at the bottom */
+            left: 10px; /* Add some left padding */
+            right: 10px; /* Add some right padding */
+            white-space: pre-line; /* Preserve line breaks in the title */
+        }
+
+        .movie-description {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+            color: white;
+            padding: 10px;
+            width: 100%;
+            max-width: 250px;
+            max-height: 80%; /* Limit the height of the description */
+            overflow-y: auto; /* Enable vertical scrolling if needed */
+            border-radius: 5px;
+            z-index: 1;
+            bottom: 0; /* Start at the bottom of the movie card */
+            left: 0; /* Start at the left of the movie card */
+        }
+
+        .movie-card:hover .movie-description {
+            display: block;
+        }
+
+        .movie-description p {
+            margin: 0; /* Remove default paragraph margin */
+            font-size: 14px; /* Adjust font size for description */
+            white-space: pre-wrap; /* Wrap text to the next line as needed */
+        }
+
+        .movie-description .info-label {
+            font-weight: bold;
+            color: gray; /* Gray text for labels */
+            font-size: 12px; /* Adjust font size for labels */
+        }
+
+        .movie-description .info-text {
+            font-size: 11px; /* Adjust font size for names */
+            color: gray; /* Gray text for names */
+        }
+
+        .footer {
+            background-color: #ff0000; /* 5% red */
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+/* Style for the search bar container */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #333; /* Dark gray background color */
+            padding: 5px 10px;
+            border-radius: 20px; /* Rounded edges */
+            position: absolute; /* Position at the top */
+            top: 20px; /* Adjust the top position */
+            left: 50%; /* Center the search bar horizontally */
+            transform: translateX(-50%); /* Center the search bar horizontally */
+            width: 50%; /* Set the width to half of the window */
+            max-width: 300px; /* Limit the maximum width if needed */
+        }
+
+/* Style for the search input */
+        .search-bar input[type="text"] {
+            flex: 1; /* Allow the input to expand to fill the available space */
+            padding: 5px;
+            border: none;
+            background-color: transparent; /* Transparent input background */
+            color: #fff; /* White text */
+            outline: none; /* Remove input outline */
+            border-radius: 20px; /* Rounded edges for the input */
+        }
+
+/* Change the placeholder text color to red */
+        .search-bar input[type="text"]::placeholder {
+            color: red;
+        }
+
+/* Style for the search button */
+        .search-bar button {
+            padding: 5px 10px;
+            background-color: transparent; /* Transparent button background */
+            color: #fff; /* White text */
+            border: none;
+            cursor: pointer;
+            font-size: 12px; /* Adjust font size for the SEARCH button */
+            border-radius: 20px; /* Rounded edges for the button */
+        }
+
+        .search-bar button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+/* Style for the Netflix button */
+        .netflix-button {
+            background-color: black; /* Black background */
+            color: red; /* Red text */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 32px; /* Adjust font size for the "N" */
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, transform 0.2s; /* Added color transition */
+            vertical-align: -5px;
+        }
+
+        .netflix-button:hover {
+            background-color: red; /* Red background on hover */
+            color: black; /* Black text on hover */
+            transform: scale(1.1); /* Enlarge button on hover */
+        }
+
+/* Style for the Netflix heading */
+        .netflix-heading {
+            display: inline; /* Display inline with the button */
+            margin-left: 10px; /* Add some left margin to separate from the button */
+            font-size: 45px; /* Set the font size to match the "N" button */
+            color: red; /* Set the text color to red */
+            line-height: 30px; /* Set the line height to match the height of the button */
+            vertical-align: middle; /* Align vertically with the button */
+        }
+
+/* Style for "Today's HOT picks" */
+        .hot-picks {
+            text-align: left; /* Left-align the text */
+            margin: 20px 0; /* Add margin to create spacing */
+        }
+
+        .hot-picks h2 {
+            font-size: 24px; /* Adjust the font size as needed */
+            color: white; /* Text color */
+            margin-bottom: 10px; /* Add some space below the text */
+            margin-top: 0; /* Remove top margin to avoid extra space */
+            padding-left: 20px; /* Add padding to the left to match the margin of the container */
+        }
+
+/* Style for the side navigation menu */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            background-color: #ff0000; /* Red */
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #ff3333; /* Lighter red on hover */
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 30px;
+            margin-left: 50px;
+        }
+
+/* Style for the side navigation menu buttons */
+        .sidenav ul li a.button {
+            font-weight: bold; /* Make the font bold */
+            color: black; /* Change font color to black */
+            transition: transform 0.2s; /* Transition for letter enlargement */
+        }
+
+        .sidenav ul li a.button:hover {
+            transform: scale(1.1); /* Enlarge letters on hover */
+        }
+
+/* Style for the content overlay when the side menu is open */
+        .content-overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        .hot-picks-container {
+            margin-left: 20px; /* Adjust the left margin as needed */
+            padding-bottom: 20px; /* Add some padding below the line */
+        }
+
+/* Add these CSS rules for the "Sign In" and "Sign Up" buttons */
+        .top-buttons {
+            position: absolute;
+            top: 20px; /* Adjust the top position as needed */
+            right: 20px; /* Adjust the right position as needed */
+            display: flex;
+            gap: 10px; /* Adjust the gap between buttons as needed */
+        }
+
+/* Style for the "Sign In" and "Sign Up" buttons */
+        .sign-button {
+            background-color: #ff0000; /* Red background */
+            color: black; /* Black text */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase; /* Transform text to uppercase */
+            transition: background-color 0.2s, color 0.2s; /* Added color transition */
+        }
+
+        .sign-button:hover {
+            background-color: black; /* Black background on hover */
+            color: #ff0000; /* Red text on hover */
+        }
+
+        .bottom-content {
+            background-color: red; /* Set the background color to red */
+            color: black; /* Set the text color to white */
+            padding: 10px; /* Add padding to the content */
+            text-align: center; /* Center-align the text horizontally */
+        }
+
+/* Left-align the text within the "bottom-content" section */
+        .bottom-content p {
+            text-align: left; /* Left-align the paragraphs within "bottom-content" */
+        }
+
+        .bottom-content h3 {
+            text-align: left; /* Left-align the h3 headings within "bottom-content" */
+        }
+        .scroll-button:first-child {
+            left: 0; /* Position on the left */
+        }
+
+/* Style for the "Next" button */
+        .scroll-button:last-child {
+            right: 0; /* Position on the right */
+        }
+        /* Updated style for the movie cards with transition */
+        .movie-card {
+            background-color: #333; /* 25% grey */
+            padding: 10px;
+            width: 250px; /* Maintain the original width */
+            height: 350px; /* Maintain the original height */
+            margin-right: 20px; /* Add spacing between movie cards */
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            transform: scale(1); /* Initial scale */
+            transition: transform 0.2s; /* Added transition for smooth scaling */
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <button class="netflix-button" onclick="openNav()">N</button>
+        <h1 class="netflix-heading">NETFLIX</h1>
+        <div class="top-buttons">
+            <button class="sign-button">Sign In</button>
+            <button class="sign-button">Sign Up</button>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search Here">
+            <button onclick="searchMovie()">SEARCH</button>
+        </div>
+
+    </header>
+
+    <!-- Side navigation menu -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <nav>
+            <ul>
+                <li><a href="#" class="button">Home</a></li>
+                <li><a href="#" class="button">Movies</a></li>
+                <li><a href="#" class="button">TV Shows</a></li>
+                <li><a href="#" class="button">My Account</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Content overlay when side menu is open -->
+    <div id="contentOverlay" class="content-overlay" onclick="closeNav()"></div>
+    <div class="hot-picks-container">
+        <h2>Today's HOT picks</h2>
+    </div>
+
+    <div class="content">
+        <div class="scroll-buttons-container">
+        <!-- Add this HTML element for "Today's HOT picks" -->
+        <button class="scroll-button" onclick="scrollMovieCards('left')"><</button>
+        <!-- Movie cards go here -->
+        <div class="movie-card-container">
+            <div class="movie-card-wrapper" id="movieCardWrapper">
+        <!-- Movie 1 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+1" alt="Movie Poster 1">
+                    <div class="movie-title">The Wheel of Time</div>
+                    <div class="movie-description">
+                        <p>The Wheel of Time is an American high fantasy television series developed by Rafe Judkins for Amazon Prime Video. The series is based on the novel series of the same name by Robert Jordan with Brandon Sanderson.</p>
+                        <div class="info-label">Episodes : </div>
+                        <div class="info-text">23</div>
+                    </div>
+                </div>
+
+        <!-- Movie 2 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+2" alt="Movie Poster 2">
+                    <div class="movie-title">One Piece</div>
+                    <div class="movie-description">
+                        <p>With his straw hat and ragtag crew, young pirate Monkey D. Luffy goes on an epic voyage for treasure in this live-action adaptation of the popular manga.</p>
+                        <div class="info-label">Episodes : </div>
+                        <div class="info-text">8</div>
+                    </div>
+                </div>
+
+        <!-- Movie 3 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+3" alt="Movie Poster 3">
+                    <div class="movie-title">Guns & Gulabs</div>
+                    <div class="movie-description">
+                        <p>In the cartel-run town of Gulaabgunj, an unprecedented opium deal pulls a big-city cop and a lovesick mechanic into its chaotic clutches.</p>
+                        <div class="info-label">Episodes : </div>
+                        <div class="info-text">24</div>
+                    </div>
+                </div>
+
+        <!-- Movie 4 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+4" alt="Movie Poster 4">
+                    <div class="movie-title">Marvel The Groot</div>
+                    <div class="movie-description">
+                        <p>I Am Groot is an American series of animated shorts created by Kirsten Lepore for the streaming service Disney+, based on the Marvel Comics featuring the character Groot.</p>
+                        <div class="info-label">Episodes : </div>
+                        <div class="info-text">10</div>
+                    </div>
+                </div>
+
+        <!-- Movie 5 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+5" alt="Movie Poster 5">
+                    <div class="movie-title">Marvel Secret Invasion</div>
+                    <div class="movie-description">
+                        <p>Secret Invasion is an American television miniseries created by Kyle Bradstreet for the streaming service Disney+, based on the 2008 Marvel Comics storyline of the same name</p>
+                        <div class="info-label">Episodes : </div>
+                        <div class="info-text">6</div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+6" alt="Movie Poster 6">
+                    <div class="movie-title">The Shawshank Redemption</div>
+                    <div class="movie-description">
+                        <p>Over the course of several years, two convicts form a friendship, seeking consolation and, eventually, redemption through basic compassion.</p>
+                        <div class="info-label">Director:</div>
+                        <div class="info-text">Frank Darabont</div>
+                        <div class="info-label">Writers:</div>
+                        <div class="info-text">Stephen King, Frank Darabont</div>
+                        <div class="info-label">Stars:</div>
+                        <div class="info-text">Tim Robbins, Morgan Freeman, Bob Gunton</div>
+                    </div>
+                </div>
+
+        <!-- Movie 2 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+7" alt="Movie Poster 7">
+                    <div class="movie-title">The Godfather</div>
+                    <div class="movie-description">
+                        <p>Don Vito Corleone, head of a mafia family, decides to hand over his empire to his youngest son Michael. However, his decision unintentionally puts the lives of his loved ones in grave danger.</p>
+                        <div class="info-label">Director:</div>
+                        <div class="info-text">Francis Ford Coppola</div>
+                        <div class="info-label">Writers:</div>
+                        <div class="info-text">Mario Puzo, Francis Ford Coppola</div>
+                        <div class="info-label">Stars:</div>
+                        <div class="info-text">Marlon Brando, Al Pacino, James Caan</div>
+                    </div>
+                </div>
+
+        <!-- Movie 3 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+8" alt="Movie Poster 8">
+                    <div class="movie-title">The Dark Knight</div>
+                    <div class="movie-description">
+                        <p>When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</p>
+                        <div class="info-label">Director:</div>
+                        <div class="info-text">Christopher Nolan</div>
+                        <div class="info-label">Writers:</div>
+                        <div class="info-text">Jonathan Nolan, Christopher Nolan, David S.</div>
+                        <div class="info-label">Stars:</div>
+                        <div class="info-text">Christian Bale, Heath Ledger, Aaron Eckhart</div>
+                    </div>
+                </div>
+
+        <!-- Movie 4 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+9" alt="Movie Poster 9">
+                    <div class="movie-title">The Godfather Part II</div>
+                    <div class="movie-description">
+                        <p>The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.</p>
+                        <div class="info-label">Director:</div>
+                        <div class="info-text">Francis Ford Coppola</div>
+                        <div class="info-label">Writers:</div>
+                        <div class="info-text">Francis Ford Coppola, Mario Puzo</div>
+                        <div class="info-label">Stars:</div>
+                        <div class="info-text">Al Pacino, Robert De Niro, Robert Duvall</div>
+                    </div>
+                </div>
+
+        <!-- Movie 5 -->
+                <div class="movie-card">
+                    <img src="https://via.placeholder.com/250x350?text=Movie+10" alt="Movie Poster 10">
+                    <div class="movie-title">12 Angry Men</div>
+                    <div class="movie-description">
+                        <p>The jury in a New York City murder trial is frustrated by a single member whose skeptical caution forces them to more carefully consider the evidence before jumping to a hasty verdict.</p>
+                        <div class="info-label">Director:</div>
+                        <div class="info-text">Sidney Lumet</div>
+                        <div class="info-label">Writer:</div>
+                        <div class="info-text">Reginald Rose</div>
+                        <div class="info-label">Stars:</div>
+                        <div class="info-text">Henry Fonda, Lee J. Cobb, Martin Balsam</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="scroll-button" onclick="scrollMovieCards('right')">></button>
+        </div>
+    </div>
+        <!-- Add more movie cards as needed -->
+
+    <div class="footer" style="color: black;">
+        &copy; 2023 Netflix
+    </div>
+    <div class="bottom-content">
+        <h3 style="color: black;">Experience the Best in Entertainment</h3>
+        <p style="color: black;">Netflix brings you a world of unlimited streaming with thousands of movies, TV shows, and documentaries.</p>
+    
+        <h3 style="color: black;">Watch Anytime, Anywhere</h3>
+        <p style="color: black;">Enjoy on your TV, computer, tablet, or smartphone. Cancel anytime.</p>
+    
+        <h3 style="color: black;">Personalized Recommendations</h3>
+        <p style="color: black;">Discover content tailored to your interests and watch your favorites.</p>
+    
+        <h3 style="color: black;">Join Now</h3>
+        <p style="color: black;">Sign up today for the ultimate entertainment experience. Don't miss out!</p>
+    </div>
+
+    <script>
+        // Function to open the side navigation menu
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("contentOverlay").style.width = "100%";
+        }
+
+        // Function to close the side navigation menu
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("contentOverlay").style.width = "0";
+        }
+
+        // Function to search for a movie
+        function searchMovie() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const movieTitles = document.querySelectorAll('.movie-title');
+
+            let movieFound = false;
+
+            movieTitles.forEach(title => {
+                const movieTitle = title.textContent.toLowerCase();
+
+                if (movieTitle.includes(searchInput)) {
+                    title.parentElement.style.display = 'block';
+                    movieFound = true;
+                } else {
+                    title.parentElement.style.display = 'none';
+                }
+            });
+
+            if (!movieFound) {
+                alert("Sorry, there is no such movie.");
+            }
+        }
+        function scrollMovieCards(direction) {
+            const wrapper = document.getElementById('movieCardWrapper');
+            
+            // Determine the width of each movie card
+            const cardWidth = 250; // Adjust as needed
+
+            // Calculate the total width of the movie cards inside the wrapper
+            const totalWidth = wrapper.scrollWidth;
+
+            // Calculate the width of the movie card container
+            const containerWidth = wrapper.clientWidth;
+
+            // Calculate the amount to scroll (equal to one movie card width)
+            const scrollAmount = cardWidth;
+
+            // Calculate the current scroll position
+            const currentScroll = wrapper.scrollLeft;
+
+            if (direction === 'left') {
+                // Scroll to the left by one movie card width
+                const newScroll = Math.max(currentScroll - scrollAmount, 0);
+                wrapper.scrollTo({
+                    left: newScroll,
+                    behavior: 'smooth', // Add smooth scrolling effect
+                });
+            } else if (direction === 'right') {
+                // Scroll to the right by one movie card width
+                const newScroll = (currentScroll + scrollAmount) % totalWidth; // Loop to the beginning if reaching the end
+                wrapper.scrollTo({
+                    left: newScroll,
+                    behavior: 'smooth', // Add smooth scrolling effect
+                });
+            }
+        }
+        const content = document.querySelector('.content');
+    const prevButton = document.querySelector('.scroll-button:first-child');
+    const nextButton = document.querySelector('.scroll-button:last-child');
+    const movieCards = document.querySelectorAll('.movie-card');
+
+    let currentIndex = 0; // Current index of the displayed movie card set
+    const cardsToShow = 4; // Number of movie cards to display at a time
+
+    // Function to show the next set of movie cards
+    function showNextSet() {
+        currentIndex += cardsToShow;
+        if (currentIndex >= movieCards.length) {
+            currentIndex = 0; // Loop back to the first set
+        }
+        updateDisplay();
+    }
+
+    // Function to show the previous set of movie cards
+    function showPrevSet() {
+        currentIndex -= cardsToShow;
+        if (currentIndex < 0) {
+            currentIndex = movieCards.length - cardsToShow; // Loop to the last set
+        }
+        updateDisplay();
+    }
+
+    // Function to update the displayed movie cards
+    function updateDisplay() {
+        movieCards.forEach((card, index) => {
+            if (index >= currentIndex && index < currentIndex + cardsToShow) {
+                card.style.display = 'inline-block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Add click event listeners to the next and previous buttons
+    nextButton.addEventListener('click', showNextSet);
+    prevButton.addEventListener('click', showPrevSet);
+
+    // Initial display setup
+    updateDisplay();
+    
+    </script>
+</body>
+</html>
